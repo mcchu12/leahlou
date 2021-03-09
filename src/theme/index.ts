@@ -1,9 +1,4 @@
-import {
-  createSpacing,
-  createBreakpoints,
-  createPalette,
-  createTypography,
-} from "./utils";
+import { createSpacing, createBreakpoints, createTypography } from "./utils";
 import {
   BORDERS,
   SPACING,
@@ -16,7 +11,7 @@ import {
 const theme = {
   spacing: createSpacing(SPACING),
   breakpoints: createBreakpoints(BREAKPOINTS),
-  palette: createPalette(COLORS),
+  palette: COLORS,
   typography: createTypography(TYPOGRAPHY),
   border: BORDERS,
   shadows: SHADOWS,

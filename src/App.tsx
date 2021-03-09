@@ -1,8 +1,11 @@
-import React from 'react';
+import React from "react";
+import { Typography } from "./components";
 
 function App() {
   return (
-   <div>Hello world</div>
+    <div>
+      <Typography variant="body1">Hello World</Typography>
+    </div>
   );
 }
 

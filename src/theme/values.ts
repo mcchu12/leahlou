@@ -34,12 +34,12 @@ export const TYPOGRAPHY = {
   variants: {
     h1: {
       fontSize: "6rem",
-      fontWeight: 300,
+      fontWeight: 500,
       lineHeight: 1.167,
     },
     h2: {
       fontSize: "3.75rem",
-      fontWeight: 300,
+      fontWeight: 400,
       lineHeight: 1.2,
     },
     h3: {
@@ -68,7 +68,7 @@ export const TYPOGRAPHY = {
       fontSize: "1rem",
       fontWeight: 400,
       lineHeight: 1.5,
-      letterSpacing: "0.75px",
+      letterSpacing: "0.25px",
     },
     body2: {
       fontSize: "0.875rem",
