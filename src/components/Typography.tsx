@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { Theme } from 'theme';
 import { createUseStyles } from 'react-jss';
-import clsx from 'clsx'
+import clsx from 'clsx';
 
 const variantMapping = {
   h1: 'h1',
@@ -26,29 +26,30 @@ interface Props {
   className?: string;
 }
 
-const Typography = React.forwardRef<
-  HTMLElement,
-  PropsWithChildren<Props>
->((props, ref) => {
-  const classes = useStyles();
+const Typography = React.forwardRef<HTMLElement, PropsWithChildren<Props>>(
+  (props, ref) => {
+    const classes = useStyles();
 
-  const { variant = 'body1' } = props;
-  const Component = variantMapping[variant];
+    const { variant = 'body1' } = props;
+    const Component = variantMapping[variant];
 
-  return React.createElement(Component, {
-    className: clsx(
-      classes.root,
-      props.className,
-      variant !== 'span' && classes[variant]
-    ),
-    ref: ref,
-    children: props.children,
-  });
-});
+    return React.createElement(Component, {
+      className: clsx(
+        classes.root,
+        props.className,
+        variant !== 'span' && classes[variant]
+      ),
+      ref: ref,
+      children: props.children,
+    });
+  }
+);
 
 const useStyles = createUseStyles(
   (theme: Theme) => ({
-    root: {},
+    root: {
+      fontFamily: theme.typography.fontFamily,
+    },
     h1: theme.typography.h1,
     h2: theme.typography.h2,
     h3: theme.typography.h3,

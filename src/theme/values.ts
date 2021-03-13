@@ -30,7 +30,7 @@ export const COLORS = {
 };
 
 export const TYPOGRAPHY = {
-  fontFamily: '"Quicksand", sans-serif;',
+  fontFamily: '"Poppins", sans-serif;',
   variants: {
     h1: {
       fontSize: "6rem",
