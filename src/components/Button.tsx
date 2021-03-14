@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 import { Theme } from 'theme';
@@ -9,34 +9,37 @@ type Props = {
   className?: string;
   display?: 'block' | 'inline';
   hoverEffect?: 'none' | 'underline' | 'contained';
+  component?: 'button' | 'a';
 };
 
-const Button: FC<Props> = ({
-  children,
-  className,
-  onClick,
-  active = false,
-  display = 'block',
-  hoverEffect = 'none',
-}) => {
-  const classes = useStyles({ display });
+const Button = React.forwardRef<HTMLElement, PropsWithChildren<Props>>(
+  (props, ref) => {
+    const {
+      component = 'button',
+      hoverEffect = 'none',
+      display = 'block',
+      active,
+      className,
+      onClick,
+      children,
+    } = props;
+    const classes = useStyles({ display });
 
-  return (
-    <button
-      className={clsx(
+    return React.createElement(component, {
+      className: clsx(
         classes.root,
         {
           [classes[hoverEffect]]: hoverEffect !== 'none',
           [classes.active]: active,
         },
         className
-      )}
-      onClick={onClick}
-    >
-      <span>{children}</span>
-    </button>
-  );
-};
+      ),
+      ref: ref,
+      onClick: onClick,
+      children: <span>{children}</span>,
+    });
+  }
+);
 
 const useStyles = createUseStyles<Theme>(
   (theme) => ({
