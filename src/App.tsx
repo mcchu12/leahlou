@@ -1,12 +1,8 @@
-import React from "react";
-import { Typography } from "./components";
+import React from 'react';
+import { Routes } from './containers';
 
 function App() {
-  return (
-    <div>
-      <Typography variant="body1">Hello World</Typography>
-    </div>
-  );
+  return <Routes />;
 }
 
 export default App;
