@@ -1,9 +1,8 @@
 import React from 'react';
+import { Routes } from './containers';
 
 function App() {
-  return (
-   <div>Hello world</div>
-  );
+  return <Routes />;
 }
 
 export default App;
