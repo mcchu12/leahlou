@@ -9,7 +9,8 @@ type Props = {
   className?: string;
   display?: 'block' | 'inline';
   hoverEffect?: 'none' | 'underline' | 'contained';
-  component?: 'button' | 'a';
+  component?: 'button' | 'a' | 'div';
+  href?: string;
 };
 
 const Button = React.forwardRef<HTMLElement, PropsWithChildren<Props>>(
@@ -22,6 +23,7 @@ const Button = React.forwardRef<HTMLElement, PropsWithChildren<Props>>(
       className,
       onClick,
       children,
+      href,
     } = props;
     const classes = useStyles({ display });
 
@@ -37,6 +39,7 @@ const Button = React.forwardRef<HTMLElement, PropsWithChildren<Props>>(
       ref: ref,
       onClick: onClick,
       children: <span>{children}</span>,
+      href: href,
     });
   }
 );
@@ -82,18 +85,19 @@ const useStyles = createUseStyles<Theme>(
       },
 
       '& span': {
+        position: 'relative',
         display: 'inline-block',
         transition: 'transform 0.3s cubic-bezier(0.2, 1, 0.8, 1)',
       },
 
       '&:hover span': {
-        transform: 'translate3d(0, -1px, 0)',
+        transform: 'translate3d(0, -2px, 0)',
       },
     },
     contained: {
       '&:before': {
         content: '""',
-        backgroundColor: theme.palette.black,
+        backgroundColor: theme.palette.common.black,
         width: '100%',
         height: '100%',
         position: 'absolute',
@@ -115,7 +119,7 @@ const useStyles = createUseStyles<Theme>(
       },
 
       '&:hover span, &$active span': {
-        color: theme.palette.white,
+        color: theme.palette.text.primaryOnDark,
       },
     },
     active: {},

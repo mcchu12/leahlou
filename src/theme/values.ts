@@ -21,11 +21,18 @@ export const BREAKPOINTS = {
 };
 
 export const COLORS = {
-  white: "#FFFFFF",
-  black: "#000000",
-  background: "#171717",
-  textPrimary: "#000000",
-  textPrimaryLight: "#CFCFCF",
+  common: {
+    white: "#FFFFFF",
+    black: "#000000",
+  },
+  background: {
+    paper: "#FDFEFF"
+  },
+  text: {
+    primary: '#333333',
+    secondary: '#8D8D8D',
+    primaryOnDark: '#FDFEFF'
+  },
   lightGray: "#4a4a4a",
 };
 
@@ -33,70 +40,70 @@ export const TYPOGRAPHY = {
   fontFamily: '"Poppins", sans-serif;',
   variants: {
     h1: {
-      fontSize: "6rem",
+      fontSize: "6em",
       fontWeight: 500,
       lineHeight: 1.167,
     },
     h2: {
-      fontSize: "3.75rem",
+      fontSize: "3.75em",
       fontWeight: 400,
       lineHeight: 1.2,
     },
     h3: {
-      fontSize: "3rem",
+      fontSize: "3em",
       fontWeight: 400,
       lineHeight: 1.167,
     },
     h4: {
-      fontSize: "2.125rem",
-      fontWeight: 400,
+      fontSize: "2.125em",
+      fontWeight: 600,
       lineHeight: 1.235,
     },
     h5: {
-      fontSize: "1.5rem",
-      fontWeight: 500,
+      fontSize: "1.5em",
+      fontWeight: 600,
       lineHeight: 1.6,
       letterSpacing: "1.25px",
     },
     h6: {
-      fontSize: "1.25rem",
-      fontWeight: 500,
+      fontSize: "1.25em",
+      fontWeight: 600,
       lineHeight: 1.6,
       letterSpacing: 0.2,
     },
     body1: {
-      fontSize: "1rem",
+      fontSize: "1em",
       fontWeight: 400,
       lineHeight: 1.5,
       letterSpacing: "0.25px",
     },
     body2: {
-      fontSize: "0.875rem",
+      fontSize: "0.875em",
       fontWeight: 400,
       lineHeight: 1.43,
       letterSpacing: "0.5px",
     },
     subtitle1: {
-      fontSize: "1rem",
+      fontSize: "1.25em",
       fontWeight: 400,
       lineHeight: 1.75,
     },
     subtitle2: {
-      fontSize: "0.875rem",
+      fontSize: "0.875em",
       fontWeight: 500,
       lineHeight: 1.57,
     },
     button: {
-      fontSize: "0.875rem",
+      fontSize: "0.875em",
       lineHeight: 1.75,
     },
     caption: {
-      fontSize: "0.75rem",
+      fontSize: "0.75em",
       fontWeight: 400,
       lineHeight: 1.66,
     },
     overline: {
-      fontSize: "0.625rem",
+      fontSize: "0.625em",
       fontWeight: 400,
       textTransform: "uppercase" as const,
       lineHeight: 2.33,
