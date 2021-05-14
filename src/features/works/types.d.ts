@@ -6,5 +6,10 @@ type Work = {
   images?: string[]
 }
 
+type Image = {
+  name: string;
+  src: string;
+}
+
 type WorkState = { [key: string]: Work }
-type ImageState = { [key: string]: string[] }
+type ImageState = { [key: string]: Image[] }

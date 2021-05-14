@@ -5,34 +5,40 @@ import { useLocation } from 'react-router-dom';
 import { Theme } from 'theme';
 import Header from './Header';
 import SocialSidebar from './SocialSidebar';
-import { getSocials } from '../../features/profile/actions';
+import { getPersonal } from '../../features/profile/actions';
 
 const mapStateToProps = (state: RootState) => ({
-  socials: state.profile.socials,
+  personal: state.profile.personal,
 });
 
-const connector = connect(mapStateToProps, { getSocials });
+const connector = connect(mapStateToProps, { getPersonal });
 
 type Props = ConnectedProps<typeof connector>;
 
-const Layout: FC<Props> = ({ socials, getSocials, children }) => {
+const Layout: FC<Props> = ({ personal, getPersonal, children }) => {
   const location = useLocation();
   const onDark = location.pathname === '/works';
   const classes = useStyles({ onDark });
 
   useEffect(() => {
-    if (!socials) getSocials();
-  }, [socials, getSocials]);
+    if (!personal) getPersonal();
+  }, [personal, getPersonal]);
+
+  if (!personal) return <></>;
 
   return (
     <div className={classes.root}>
-      <Header onDark={onDark} socials={socials} />
+      <Header
+        onDark={onDark}
+        socials={personal.socials}
+        logoText={personal.name}
+      />
       <main>
         <section className={classes.section}>
           <div className={classes.contentWrapper}>{children}</div>
         </section>
       </main>
-      <SocialSidebar socials={socials} />
+      <SocialSidebar socials={personal.socials} />
     </div>
   );
 };

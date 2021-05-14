@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { fetchWorks, fetchWorkImages } from '../../services/works-service';
+import { fetchWorks, fetchWorkImages } from './service';
 
 export const getWorksActions = {
   request: 'FETCH_WORKS_REQUEST',
@@ -19,7 +19,10 @@ export const getWorks = (): ThunkAction<void, RootState, unknown, AnyAction> => 
 
   const res = await fetchWorks();
 
-  dispatch({ type: getWorksActions.success, payload: res })
+  const data = res.docs.map(doc => doc.data());
+
+  if (!(data.length === 0)) { dispatch({ type: getWorksActions.success, payload: data }) }
+  else { dispatch({ type: getWorksActions.failure }) }
 }
 
 export const getWorkImages = (name: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
@@ -27,5 +30,8 @@ export const getWorkImages = (name: string): ThunkAction<void, RootState, unknow
 
   const res = await fetchWorkImages(name);
 
-  dispatch({ type: getWorkImageActions.success, payload: res });
+  const data = res.docs.map(doc => doc.data());
+
+  if (!(data.length === 0)) dispatch({ type: getWorkImageActions.success, payload: { name, images: data } });
+  else { dispatch({ type: getWorkImageActions.failure }) }
 }

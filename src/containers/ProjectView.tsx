@@ -43,7 +43,7 @@ const ProjectView: FC<Props> = ({
     if (!infos) getWorks();
   }, [params, getWorkImages, images, infos, getWorks]);
 
-  const previewImage = (img: string, ev: React.MouseEvent<HTMLDivElement>) => {
+  const previewImage = (img: Image, ev: React.MouseEvent<HTMLDivElement>) => {
     currentImg = ev.currentTarget;
     const imgOffset = currentImg.getBoundingClientRect();
 
@@ -65,8 +65,10 @@ const ProjectView: FC<Props> = ({
     gsap.set(currentImg, { alpha: 0 });
     gsap.set(canvas, { alpha: 1 });
 
-    originalPreview.setAttribute('src', img);
-    clonePreview.setAttribute('src', img);
+    originalPreview.setAttribute('src', img.src);
+    originalPreview.setAttribute('alt', img.name);
+    clonePreview.setAttribute('src', img.src);
+    clonePreview.setAttribute('alt', img.name);
 
     const dx =
         // use this instead of window.innerWidth to exclude width of scroll bar
@@ -165,7 +167,7 @@ const ProjectView: FC<Props> = ({
         </div>
         {images.map((img, index) => (
           <div key={index} onClick={(ev) => previewImage(img, ev)}>
-            <img src={img} alt="test" />
+            <img src={img.src} alt={img.name} />
           </div>
         ))}
       </Masonry>
@@ -174,8 +176,8 @@ const ProjectView: FC<Props> = ({
         <MenuButton className={classes.closeBtn} onClick={closePreview} close>
           X
         </MenuButton>
-        <img className={classes.clone} alt="clone img from unsplash" />
-        <img className={classes.original} alt="img from unsplash" />
+        <img className={classes.clone} alt="" />
+        <img className={classes.original} alt="" />
         <canvas className={classes.canvas} ref={canvasRef} />
       </div>
     </div>

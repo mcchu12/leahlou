@@ -15,9 +15,10 @@ const navLinks = [
 type Props = {
   onDark?: boolean;
   socials: Social[] | null;
+  logoText: string;
 };
 
-const Header: FC<Props> = ({ onDark = false, socials }) => {
+const Header: FC<Props> = ({ onDark = false, socials, logoText }) => {
   const location = useLocation();
   const [isMenuOpen, setMenuOpen] = useState<boolean>();
   const mobileNavEl = useRef<HTMLDivElement>(null);
@@ -65,7 +66,7 @@ const Header: FC<Props> = ({ onDark = false, socials }) => {
       <div className={classes.toolbar}>
         <Link to="/" onClick={handleMenuClose}>
           <Typography className={classes.logo} variant="h5">
-            Jaziel Pama
+            {logoText}
           </Typography>
         </Link>
 
