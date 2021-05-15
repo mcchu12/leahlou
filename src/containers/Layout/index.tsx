@@ -49,7 +49,14 @@ const useStyles = createUseStyles<Theme>(
       color: ({ onDark }) =>
         onDark ? theme.palette.text.primaryOnDark : theme.palette.text.primary,
     },
-    section: {},
+    section: {
+      [theme.breakpoints.up('sm')]: {
+        fontSize: '1.2em',
+      },
+      [theme.breakpoints.up('md')]: {
+        fontSize: '1.4em',
+      },
+    },
     contentWrapper: {
       maxWidth: theme.breakpoints.values('lg'),
       margin: '0 auto',

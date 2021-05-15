@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Layout from './Layout';
-import Work from './WorkView';
-import Project from './ProjectView';
+import WorkList from './Works';
+import Work from './Work';
 import Contact from './Contact';
 import About from './About';
 
@@ -11,8 +11,8 @@ const Routes = () => {
     <BrowserRouter>
       <Layout>
         <Switch>
-          <Route path="/works" exact component={Work} />
-          <Route path="/works/:id" exact component={Project} />
+          <Route path="/works" exact component={WorkList} />
+          <Route path="/works/:id" exact component={Work} />
           <Route path="/about" exact component={About} />
           <Route path="/contact" exact component={Contact} />
           <Redirect from="/" to="/works" />

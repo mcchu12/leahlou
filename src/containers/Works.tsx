@@ -68,51 +68,57 @@ const WorkView: FC<Props> = ({ works, getWorks }) => {
       });
   };
 
+  const renderProjects = () => (
+    <div className={classes.projects}>
+      <ul>
+        {works.map(({ name, theme, date }, index) => (
+          <li
+            key={name}
+            onClick={() => history.push(`${history.location.pathname}/${name}`)}
+          >
+            <div>
+              <Typography variant="body2">{theme}</Typography>
+              <div
+                ref={(ref) => ref && linkRefs.current.push(ref)}
+                className={classes.projectName}
+                onMouseEnter={handleMouseEnter}
+              >
+                <Typography variant="subtitle2">{`${index + 1}.`}</Typography>
+                <Typography variant="h4">{name}</Typography>
+                <Typography variant="subtitle2">{`/ ${date}`}</Typography>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+
+  const renderScreens = () => (
+    <div className={classes.screens} aria-hidden={true}>
+      {works.map(({ thumbnail }, index) => (
+        <div
+          ref={(ref) => ref && screenRefs.current.push(ref)}
+          key={index}
+          className={classes.screenItem}
+        >
+          <div
+            className={classes.screen}
+            style={{ backgroundImage: `url(${thumbnail})` }}
+          ></div>
+          <div
+            className={classes.screen}
+            style={{ backgroundImage: `url(${thumbnail})` }}
+          ></div>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div className={classes.root}>
-      <div className={classes.projects}>
-        <ul>
-          {works.map(({ name, theme, date }, index) => (
-            <li
-              key={name}
-              onClick={() =>
-                history.push(`${history.location.pathname}/${name}`)
-              }
-            >
-              <div>
-                <Typography variant="body2">{theme}</Typography>
-                <div
-                  ref={(ref) => ref && linkRefs.current.push(ref)}
-                  className={classes.projectName}
-                  onMouseEnter={handleMouseEnter}
-                >
-                  <Typography variant="subtitle2">{`${index + 1}.`}</Typography>
-                  <Typography variant="h3">{name}</Typography>
-                  <Typography variant="subtitle2">{`/ ${date}`}</Typography>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className={classes.screens} aria-hidden={true}>
-        {works.map(({ thumbnail }, index) => (
-          <div
-            ref={(ref) => ref && screenRefs.current.push(ref)}
-            key={index}
-            className={classes.screenItem}
-          >
-            <div
-              className={classes.screen}
-              style={{ backgroundImage: `url(${thumbnail})` }}
-            ></div>
-            <div
-              className={classes.screen}
-              style={{ backgroundImage: `url(${thumbnail})` }}
-            ></div>
-          </div>
-        ))}
-      </div>
+      {renderProjects()}
+      {renderScreens()}
     </div>
   );
 };
@@ -141,7 +147,6 @@ const useStyles = createUseStyles<Theme>(
         justifyContent: 'flex-end',
         position: 'relative',
         zIndex: '100',
-        fontSize: '0.85em',
 
         '& li': {
           margin: theme.spacing(4, 0),

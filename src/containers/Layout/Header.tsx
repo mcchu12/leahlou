@@ -61,74 +61,82 @@ const Header: FC<Props> = ({ onDark = false, socials, logoText }) => {
     }
   };
 
+  const renderToolbar = () => (
+    <div className={classes.toolbar}>
+      <Link to="/" onClick={handleMenuClose}>
+        <Typography className={classes.logo} variant="h5">
+          {logoText}
+        </Typography>
+      </Link>
+
+      <nav className={classes.nav}>
+        {navLinks.map(({ path, name }) => (
+          <Link key={path} to={path}>
+            <Button
+              component="div"
+              hoverEffect="underline"
+              display="inline"
+              active={location.pathname === path}
+            >
+              {name}
+            </Button>
+          </Link>
+        ))}
+      </nav>
+
+      <MenuButton
+        className={classes.menuButton}
+        onClick={handleMenuClick}
+        isOpen={isMenuOpen}
+        color={isMenuOpen ? 'dark' : onDark ? 'light' : 'dark'}
+      />
+    </div>
+  );
+
+  const renderMobileNav = () => (
+    <div
+      ref={mobileNavEl}
+      className={clsx(classes.mobileNav, {
+        [classes.isMenuOpen]: isMenuOpen,
+      })}
+    >
+      <nav>
+        {navLinks.map(({ path, name }) => (
+          <Link key={path} to={path}>
+            <Button
+              component="div"
+              hoverEffect="contained"
+              onClick={handleMenuClick}
+              className={classes.mobileLink}
+            >
+              {name}
+            </Button>
+          </Link>
+        ))}
+      </nav>
+
+      <div className={classes.social}>
+        {socials &&
+          socials.map((social) => (
+            <Button
+              key={social.platform}
+              hoverEffect="underline"
+              display="inline"
+              component="a"
+              href={social.url}
+            >
+              {social.platform}
+            </Button>
+          ))}
+      </div>
+    </div>
+  );
+
   return (
     <header className={classes.root}>
-      <div className={classes.toolbar}>
-        <Link to="/" onClick={handleMenuClose}>
-          <Typography className={classes.logo} variant="h5">
-            {logoText}
-          </Typography>
-        </Link>
+      {renderToolbar()}
 
-        <nav className={classes.nav}>
-          {navLinks.map(({ path, name }) => (
-            <Link key={path} to={path}>
-              <Button
-                component="div"
-                hoverEffect="underline"
-                display="inline"
-                active={location.pathname === path}
-              >
-                {name}
-              </Button>
-            </Link>
-          ))}
-        </nav>
-
-        <MenuButton
-          className={classes.menuButton}
-          onClick={handleMenuClick}
-          isOpen={isMenuOpen}
-          color={isMenuOpen ? 'dark' : onDark ? 'light' : 'dark'}
-        />
-      </div>
-
-      <div
-        ref={mobileNavEl}
-        className={clsx(classes.mobileNav, {
-          [classes.isMenuOpen]: isMenuOpen,
-        })}
-      >
-        <nav>
-          {navLinks.map(({ path, name }) => (
-            <Link key={path} to={path}>
-              <Button
-                component="div"
-                hoverEffect="contained"
-                onClick={handleMenuClick}
-                className={classes.mobileLink}
-              >
-                {name}
-              </Button>
-            </Link>
-          ))}
-        </nav>
-
-        <div className={classes.social}>
-          {socials &&
-            socials.map((social) => (
-              <Button
-                key={social.platform}
-                hoverEffect="underline"
-                display="inline"
-                component="a"
-                href={social.url}
-              >
-                {social.platform}
-              </Button>
-            ))}
-        </div>
-      </div>
+      {renderMobileNav()}
     </header>
   );
 };

@@ -46,10 +46,6 @@ const useStyles = createUseStyles<Theme>(
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-
-      [theme.breakpoints.up('md')]: {
-        fontSize: '1.4em',
-      },
     },
     contact: {
       margin: theme.spacing(3, 0),
