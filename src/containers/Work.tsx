@@ -1,12 +1,13 @@
-import React, { FC, useRef, useEffect } from 'react';
+import React, { FC, useRef, useEffect, useCallback, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { match, useParams } from 'react-router-dom';
 import { createUseStyles } from 'react-jss';
 import Masonry from 'react-masonry-css';
+import imagesloaded from 'imagesloaded';
 import { Theme } from 'theme';
 import theme from '../theme';
 import { gsap } from 'gsap';
-import { MenuButton, Typography } from '../components';
+import { MenuButton, Typography, Loader } from '../components';
 import { getWorkImages, getWorks } from '../features/works/actions';
 
 type OwnProps = {
@@ -24,17 +25,14 @@ const connector = connect(mapStateToProps, dispatchProps);
 
 type Props = ConnectedProps<typeof connector>;
 
-const ProjectView: FC<Props> = ({
-  infos,
-  images = [],
-  getWorkImages,
-  getWorks,
-}) => {
+const Work: FC<Props> = ({ infos, images = [], getWorkImages, getWorks }) => {
   const params = useParams<{ id: string }>();
-  const classes = useStyles();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const classes = useStyles({ loaded });
   let currentImg: HTMLDivElement;
   let tl: gsap.core.Timeline;
 
@@ -42,6 +40,17 @@ const ProjectView: FC<Props> = ({
     if (images.length === 0) getWorkImages(params.id);
     if (!infos) getWorks();
   }, [params, getWorkImages, images, infos, getWorks]);
+
+  useEffect(() => {
+    if (gridRef.current && !loaded)
+      imagesloaded(gridRef.current, () => {
+        setLoaded(true);
+        gsap.to(gridRef.current, {
+          autoAlpha: 1,
+          ease: 'Power1.easeOut',
+        });
+      });
+  });
 
   const previewImage = (img: Image, ev: React.MouseEvent<HTMLDivElement>) => {
     currentImg = ev.currentTarget;
@@ -102,7 +111,7 @@ const ProjectView: FC<Props> = ({
       .play();
   };
 
-  const createRipple = (onComplete: () => void) => {
+  const createRipple = useCallback((onComplete: () => void) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -138,7 +147,7 @@ const ProjectView: FC<Props> = ({
       onUpdateParams: [ripple],
       onComplete: onComplete,
     });
-  };
+  }, []);
 
   const closePreview = () => {
     tl.reverse();
@@ -147,30 +156,41 @@ const ProjectView: FC<Props> = ({
     gsap.to(canvasRef.current, { alpha: 0 });
   };
 
+  const renderGrid = () => (
+    <>
+      {!loaded && <Loader />}
+      <div ref={gridRef} className={classes.grid}>
+        <Masonry
+          breakpointCols={{
+            default: 3,
+            [theme.breakpoints.values('sm')]: 1,
+            [theme.breakpoints.values('md')]: 2,
+          }}
+          className={classes.masonry}
+          columnClassName={classes.masonryColumn}
+        >
+          {images.map((img, index) => (
+            <div key={index} onClick={(ev) => previewImage(img, ev)}>
+              <img src={img.src} alt={img.name} />
+            </div>
+          ))}
+        </Masonry>
+      </div>
+    </>
+  );
+
   if (images.length === 0 || !infos) return <></>;
 
   return (
     <div className={classes.root}>
       <Typography variant="h4">{params.id}</Typography>
-      <Masonry
-        breakpointCols={{
-          default: 3,
-          [theme.breakpoints.values('sm')]: 1,
-          [theme.breakpoints.values('md')]: 2,
-        }}
-        className={classes.masonry}
-        columnClassName={classes.masonryColumn}
-      >
-        <div className={classes.description}>
-          <Typography variant="subtitle1">{infos.theme}</Typography>
-          <Typography>{infos.date}</Typography>
-        </div>
-        {images.map((img, index) => (
-          <div key={index} onClick={(ev) => previewImage(img, ev)}>
-            <img src={img.src} alt={img.name} />
-          </div>
-        ))}
-      </Masonry>
+
+      <div className={classes.description}>
+        <Typography variant="body1">{infos.theme}</Typography>
+        <Typography variant="overline">{infos.date}</Typography>
+      </div>
+
+      {renderGrid()}
 
       <div ref={previewRef} className={classes.preview} aria-hidden>
         <MenuButton className={classes.closeBtn} onClick={closePreview} close>
@@ -193,8 +213,15 @@ const useStyles = createUseStyles<Theme>((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
     display: 'flex',
-
     width: 'auto',
+  },
+
+  grid: {
+    visibility: 'hidden',
+  },
+
+  loader: {
+    textAlign: 'center',
   },
   masonryColumn: {
     paddingLeft: 16,
@@ -207,30 +234,12 @@ const useStyles = createUseStyles<Theme>((theme) => ({
     '& > div img': {
       display: 'block',
       width: '100%',
+      cursor: 'pointer',
     },
   },
   description: {
-    paddingBottom: theme.spacing(3),
-
-    [theme.breakpoints.up('sm')]: {
-      textAlign: 'right',
-      padding: theme.spacing(3, 0),
-
-      '& h6': {
-        position: 'relative',
-        display: 'inline-block',
-      },
-
-      '& h6:before': {
-        content: '""',
-        position: 'absolute',
-        top: '50%',
-        left: '-32px',
-        width: '24px',
-        height: '2px',
-        backgroundColor: theme.palette.text.secondary,
-      },
-    },
+    margin: theme.spacing(2, 0, 4),
+    // paddingBottom: theme.spacing(3),
   },
   preview: {
     position: 'fixed',
@@ -269,4 +278,4 @@ const useStyles = createUseStyles<Theme>((theme) => ({
   },
 }));
 
-export default connector(ProjectView);
+export default connector(Work);
